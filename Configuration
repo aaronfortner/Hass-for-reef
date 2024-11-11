@@ -1,0 +1,459 @@
+#ads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+
+script: !include scripts.yaml
+scene: !include scenes.yaml
+config_editor:
+
+###################################################################################
+#                                  Customize Gobal                                #
+###################################################################################
+homeassistant:
+  customize_glob:
+     "input_boolean.r2d*":
+       icon: mdi:calendar-clock
+     "input_boolean.r1d*":
+       icon: mdi:pump
+     "input_boolean.r1af":
+       icon: mdi:car-turbocharger
+     "sensor.reefdoser*_pump*_daily_runtime":
+       icon: mdi:history
+     "sensor.reefdoser*_pump*_dosage_split":
+       icon: mdi:beaker
+     "sensor.reefdoser*_pump*_time_split":
+       icon: mdi:history
+     "input_number.reefdoser*_pump*_daily_mins":
+       icon: mdi:clock
+     "input_select.reefdoser*_pump*_daily_freq":
+       icon: mdi:progress-clock
+
+#switch:
+#  - platform: mqtt
+#    name: "Reefdoser1 Pump1"
+#    state_topic:  "homeassistant/stat/xxxxxxxxxx/POWER1"
+#    command_topic: "homeassistant/cmnd/xxxxxxxxx/POWER1"
+#    qos: 0
+#    payload_on: "off"
+#    payload_off: "on"
+#    retain: True
+###################################################################################
+#                                  input_boolean                                  #
+###################################################################################
+input_boolean:
+  r1d1:
+    name: R1D1 Automatic Alk
+  r1d2:
+    name: R1D2 Automatic Cal
+  r1d3:
+    name: R1D3 Automatic Trace  
+  r1d4:
+    name: R1D4 Automatic Mag  
+  r1d1s:
+    name: R1D1s Manual Alk
+  r1d2s:
+    name: R1D2s Manual Cal
+  r1d4s:
+    name: R1D4s Manual Mag
+  r1af:
+    name: R1 ATO Fill
+  r1fm:
+    name: feed mode
+  r1vm:
+    name: uv save state 
+################################################################################
+#                                  sensor                                         #
+###################################################################################
+sensor: 
+  - platform: template
+    sensors:
+# Reefdosers ONLINE status sensors
+      reefdoser1:
+        value_template: '{% if is_state("device_tracker.reefdoser1", "home") %}Online{% else %}OFFLINE{% endif %}'
+        friendly_name: 'Reefdoser1 Status'
+        icon_template: >-
+          {% if is_state('device_tracker.reefdoser1', 'home') %}
+            mdi:power-plug
+          {% else %}
+            mdi:power-plug-off
+          {% endif %}
+      reef11:
+        value_template: '{% if is_state("device_tracker.reef11", "home") %}Online{% else %}OFFLINE{% endif %}'
+        friendly_name: 'Reef1 Status'
+        icon_template: >-
+          {% if is_state('device_tracker.reef11', 'home') %}
+            mdi:power-plug
+          {% else %}
+            mdi:power-plug-off
+          {% endif %}
+      reef1l:
+        value_template: '{% if is_state("device_tracker.reef1l", "home") %}Online{% else %}OFFLINE{% endif %}'
+        friendly_name: 'Reef1l Status'
+        icon_template: >-
+          {% if is_state('device_tracker.reef1l', 'home') %}
+            mdi:power-plug
+          {% else %}
+            mdi:power-plug-off
+          {% endif %}     
+      atoon:
+        value_template: '{% if is_state("sensor.75gpumps_analog_range", "1024") %}filling{% else %}topoff{% endif %}'
+        friendly_name: 'ATO Status'
+        icon_template: >-
+          {% if is_state('sensor.75gpumps_analog_range', '1024') %}
+            mdi:water-pump
+          {% else %}
+            mdi:water-check
+          {% endif %}          
+
+      heateron:
+        value_template: '{% if is_state("switch.heater_s", "on") %} heaters on{% else %}heaters off{% endif %}'
+        friendly_name: 'heater Status'
+        icon_template: >-
+          {% if is_state('sensor.75gpumps_ds18b20_temperature', '78.0') %}
+            mdi:water-thermometer
+          {% else %}
+            mdi:water-thermometer-outline
+          {% endif %}      
+     
+      
+# Reefdoser1 Runtime sensors
+      reefdoser1_pump1_daily_runtime:
+        value_template: "{{ (float(states('input_number.reefdoser1_pump1_daily_dosage')) / 0.3) | round(2) }}"
+        friendly_name: 'R1D1 Total Dosing Time'
+        unit_of_measurement: 'sec'
+      reefdoser1_pump1_dosage_split:
+        value_template: "{{ (float( states('input_number.reefdoser1_pump1_daily_dosage')) / float(states('input_select.reefdoser1_pump1_daily_freq'))) | round(2) }} "
+        friendly_name: 'R1D1 Individual Dosage Amount'
+        unit_of_measurement: 'ml'
+      reefdoser1_pump1_time_split:
+        value_template: "{{ (float(states('sensor.reefdoser1_pump1_daily_runtime')) / float(states('input_select.reefdoser1_pump1_daily_freq'))) | round(2) }}"
+        friendly_name: 'R1D1 Individual Dosing Time'
+        unit_of_measurement: 'sec'
+        
+      reefdoser1_pump2_daily_runtime:
+       value_template: "{{ (float(states('input_number.reefdoser1_pump2_daily_dosage')) / 0.3 ) | round(2) }}"
+       friendly_name: 'R1D2 Total Dosing Time'
+       unit_of_measurement: 'sec'
+      reefdoser1_pump2_dosage_split:
+        value_template: "{{ (float( states('input_number.reefdoser1_pump2_daily_dosage')) / float(states('input_select.reefdoser1_pump2_daily_freq'))) | round(2) }} "
+        friendly_name: 'R1D2 Individual Dosage Amount'
+        unit_of_measurement: 'ml'
+      reefdoser1_pump2_time_split:
+        value_template: "{{ (float(states('sensor.reefdoser1_pump2_daily_runtime')) / float(states('input_select.reefdoser1_pump2_daily_freq'))) | round(2) }}"
+        friendly_name: 'R1D2 Individual Dosing Time'
+        unit_of_measurement: 'sec'  
+        
+      reefdoser1_pump3_daily_runtime:
+       value_template: "{{ (float(states('input_number.reefdoser1_pump3_daily_dosage')) / 0.3 ) | round(2) }}"
+       friendly_name: 'R1D3 Total Dosing Time'
+       unit_of_measurement: 'sec'
+      reefdoser1_pump3_dosage_split:
+        value_template: "{{ (float( states('input_number.reefdoser1_pump3_daily_dosage')) / float(states('input_select.reefdoser1_pump3_daily_freq'))) | round(2) }} "
+        friendly_name: 'R1D3 Individual Dosage Amount'
+        unit_of_measurement: 'ml'
+      reefdoser1_pump3_time_split:
+        value_template: "{{ (float(states('sensor.reefdoser1_pump3_daily_runtime')) / float(states('input_select.reefdoser1_pump3_daily_freq'))) | round(2) }}"
+        friendly_name: 'R1D3 Individual Dosing Time'
+        unit_of_measurement: 'sec'  
+        
+      reefdoser1_pump4_daily_runtime:
+       value_template: "{{ (float(states('input_number.reefdoser1_pump4_daily_dosage')) / 0.3 ) | round(2) }}"
+       friendly_name: 'R1D4 Total Dosing Time'
+       unit_of_measurement: 'sec'
+      reefdoser1_pump4_dosage_split:
+        value_template: "{{ (float( states('input_number.reefdoser1_pump4_daily_dosage')) / float(states('input_select.reefdoser1_pump4_daily_freq'))) | round(2) }} "
+        friendly_name: 'R1D4 Individual Dosage Amount'
+        unit_of_measurement: 'ml'
+      reefdoser1_pump4_time_split:
+        value_template: "{{ (float(states('sensor.reefdoser1_pump4_daily_runtime')) / float(states('input_select.reefdoser1_pump4_daily_freq'))) | round(2) }}"
+        friendly_name: 'R1D4 Individual Dosing Time'
+        unit_of_measurement: 'sec'  
+        
+      reefdoser1_pump1s_single_runtime:
+        value_template: "{{ (float(states('input_number.reefdoser1_pump1s_single_dosage')) / 0.3) | round(2) }}"
+        friendly_name: 'R1D1s Total Dosing Time'
+        unit_of_measurement: 'sec'
+
+      reefdoser1_pump2s_single_runtime:
+        value_template: "{{ (float(states('input_number.reefdoser1_pump2s_single_dosage')) / 0.3) | round(2) }}"
+        friendly_name: 'R1D2s Total Dosing Time'
+        unit_of_measurement: 'sec'
+
+      reefdoser1_pump4s_single_runtime:
+        value_template: "{{ (float(states('input_number.reefdoser1_pump4s_single_dosage')) / 0.3) | round(2) }}"
+        friendly_name: 'R1D4s Total Dosing Time'
+        unit_of_measurement: 'sec'
+
+      reef_ato_fill_runtime:
+        value_template: "{{ (float(states('input_number.reef_ato_fill')) / 0.0034) | round(2) }}"
+        friendly_name: 'R1af'
+        unit_of_measurement: 'sec' 
+
+  - platform: history_stats
+    name: UV_Hour_Meter
+    entity_id: switch.uv
+    state: 'on'
+    type: time
+    start: '{{ 0 }}'
+    end: '{{ now() }}'    
+     
+recorder:
+  purge_keep_days: 365
+  commit_interval: 60
+  include:
+    entities:
+      - sensor.uv_hour_meter
+      - sensor.75gpumps_ds18b20_temperature
+      - switch.ato
+      - switch.dpump1
+      - switch.dpump2
+      - switch.dpump3
+      - switch.dpump4
+      - switch.ligths
+      - switch.power_head
+      - switch.protein_skimmer
+      - switch.pump
+      - switch.uv
+      - switch.heater_s
+################################################################################
+#                                  device_tracker:                                #
+###################################################################################
+device_tracker:
+  - platform: ping
+    hosts:
+      reefdoser1: xxx.xxx.x.xx
+  - platform: ping
+    hosts:
+      reef11: xxx.xxx.x.xx
+  - platform: ping
+    hosts:
+      reef1l: xxx.xxx.x.xx
+
+###################################################################################
+#                                  input_numbers                                  #
+###################################################################################
+input_number:
+  reefdoser1_pump1_daily_dosage:
+    name: Daily Dosage Alk
+    min: 1
+    max: 500
+    step: 1
+    unit_of_measurement: ml
+    mode: box
+#    initial: 30
+  reefdoser1_pump1_daily_mins:
+    name: Dosing Start Minute Alk
+    min: 00
+    max: 59
+    step: 1
+    mode: box
+#    initial: 00
+    unit_of_measurement: mins
+    
+  reefdoser1_pump2_daily_dosage:
+    name: Daily Dosage Cal
+    min: 1
+    max: 500
+    step: 1
+    unit_of_measurement: ml
+    mode: box
+#    initial: 30
+  reefdoser1_pump2_daily_mins:
+    name: Dosing Start Minute Cal
+    min: 00
+    max: 59
+    step: 1
+    mode: box
+#    initial: 00
+    unit_of_measurement: mins
+    
+  reefdoser1_pump3_daily_dosage:
+    name: Daily Dosage Trace
+    min: 1
+    max: 500
+    step: 1
+    unit_of_measurement: ml
+    mode: box
+#    initial: 30
+  reefdoser1_pump3_daily_mins:
+    name: Dosing Start Minute Trace
+    min: 00
+    max: 59
+    step: 1
+    mode: box
+#    initial: 00
+    unit_of_measurement: mins
+    
+  reefdoser1_pump4_daily_dosage:
+    name: Daily Dosage Mag
+    min: 1
+    max: 500
+    step: 1
+    unit_of_measurement: ml
+    mode: box
+#    initial: 30
+  reefdoser1_pump4_daily_mins:
+    name: Dosing Start Minute Mag
+    min: 00
+    max: 59
+    step: 1
+    mode: box
+#    initial: 00
+    unit_of_measurement: mins
+
+  reefdoser1_pump1s_single_dosage:
+    name: single Dosage Alk
+    min: 1
+    max: 500
+    step: 1
+    unit_of_measurement: ml
+    mode: box
+#    initial: 30  
+
+  reefdoser1_pump2s_single_dosage:
+    name: single Dosage Cal
+    min: 1
+    max: 500
+    step: 1
+    unit_of_measurement: ml
+    mode: box
+#    initial: 30  
+
+  reefdoser1_pump4s_single_dosage:
+    name: single Dosage Mag
+    min: 1
+    max: 500
+    step: 1
+    unit_of_measurement: ml
+    mode: box
+#    initial: 30  
+
+  reef_ato_fill:
+    name: Fill Amount
+    min: 1
+    max: 5
+    step: 1
+    unit_of_measurement: Gal
+    mode: box
+#    initial: 30  
+#    initial: 30
+#    initial: 30
+###################################################################################
+#                                  input_select                                   #
+###################################################################################
+input_select:
+  reefdoser1_pump1_daily_freq:
+    name: Daily Dosing Frequency Alk
+    options:
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "6"
+      - "8"
+      - "12"
+      - "24"
+    icon: mdi:target
+    
+  reefdoser1_pump2_daily_freq:
+    name: Daily Dosing Frequency Cal
+    options:
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "6"
+      - "8"
+      - "12"
+      - "24"
+    icon: mdi:target
+    
+  reefdoser1_pump3_daily_freq:
+    name: Daily Dosing Frequency Trace
+    options:
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "6"
+      - "8"
+      - "12"
+      - "24"
+    icon: mdi:target
+    
+  reefdoser1_pump4_daily_freq:
+    name: Daily Dosing Frequency Mag
+    options:
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "6"
+      - "8"
+      - "12"
+      - "24"
+    icon: mdi:target
+
+automation: !include automations.yaml
+
+wake_on_lan:
+switch:
+  - platform: wake_on_lan
+    mac: "xx:xx:xx:xx:xx:xx"
+    name: "xxxxxx"
+  - platform: remote_rpi_gpio
+    host: xxx.xxx.x.xx
+    ports:
+      11: Fan Office
+
+#notify:
+ # - platform: html5
+ #   vapid_pub_key: BHk4hYSRUYMPwRw6HbMBbb0QoS9iXlL-2iNHyaB3jertF0dUjmb-h_F2hKUIIN69XE4Jk23C4MdzamrcAik1v_0
+ #   vapid_prv_key: hh2FyB5AVU-sOY3tCEEwLaDK6aTMzSJ_dae62wAJeiA
+ #   vapid_email: firebase-adminsdk-ns4f4@hass-e4536.iam.gserviceaccount.com
+
+
+counter:
+  waterused:
+    initial: 0
+    step: 1
+
+
+
+
+
+  
+###################################################################################
+#                                  group                                          #
+###################################################################################
+
+###################################################################################
+#                             Dynamic  Card in lovelace                           #
+###################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
