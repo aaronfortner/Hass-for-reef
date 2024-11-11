@@ -1,0 +1,749 @@
+- id: 3dd92ae28081481d99778aec60e5c3dc
+  alias: Reefdoser1 Pump1 at the specified frequency
+  trigger:
+  - platform: time_pattern
+    seconds: '1'
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ now().hour % ( 24 / float(states(''input_select.reefdoser1_pump1_daily_freq'')))|int
+        == 0 }}'
+    - condition: template
+      value_template: '{% if now().minute | int ==  states.input_number.reefdoser1_pump1_daily_mins.state
+        | int %}true{% endif %}'
+    - condition: state
+      entity_id: input_boolean.r1d1
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump1
+  - delay: 00:00:{{ states.sensor.reefdoser1_pump1_time_split.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump1
+- id: 3dd92ae28081481d99778aec60e5c3d2
+  alias: Reefdoser1 Pump2 at the specified frequency
+  trigger:
+  - platform: time_pattern
+    seconds: '1'
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ now().hour % ( 24 / float(states(''input_select.reefdoser1_pump2_daily_freq'')))|int
+        == 0 }}'
+    - condition: template
+      value_template: '{% if now().minute | int ==  states.input_number.reefdoser1_pump2_daily_mins.state
+        | int %}true{% endif %}'
+    - condition: state
+      entity_id: input_boolean.r1d2
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump2
+  - delay: 00:00:{{ states.sensor.reefdoser1_pump2_time_split.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump2
+- id: 3dd92ae28081481d99778aec60e5c3d3
+  alias: Reefdoser1 Pump3 at the specified frequency
+  trigger:
+  - platform: time_pattern
+    seconds: '1'
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ now().hour % ( 24 / float(states(''input_select.reefdoser1_pump3_daily_freq'')))|int
+        == 0 }}'
+    - condition: template
+      value_template: '{% if now().minute | int ==  states.input_number.reefdoser1_pump3_daily_mins.state
+        | int %}true{% endif %}'
+    - condition: state
+      entity_id: input_boolean.r1d3
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump3
+  - delay: 00:00:{{ states.sensor.reefdoser1_pump3_time_split.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump3
+- id: 3dd92ae28081481d99778aec60e5c3d4
+  alias: Reefdoser1 Pump4 at the specified frequency
+  trigger:
+  - platform: time_pattern
+    seconds: '1'
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ now().hour % ( 24 / float(states(''input_select.reefdoser1_pump4_daily_freq'')))|int
+        == 0 }}'
+    - condition: template
+      value_template: '{% if now().minute | int ==  states.input_number.reefdoser1_pump4_daily_mins.state
+        | int %}true{% endif %}'
+    - condition: state
+      entity_id: input_boolean.r1d4
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump4
+  - delay: 00:00:{{ states.sensor.reefdoser1_pump4_time_split.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump4
+- id: 3dd92ae28081481d99778aec60e5c3d5
+  alias: Reefdoser1 Pump1s at the specified frequency
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.r1d1s
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.r1d1s
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump1
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.r1d1s
+  - delay: 00:00:{{ states.sensor.reefdoser1_pump1s_single_runtime.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump1
+- id: 3dd92ae28081481d99778aec60e5c3d6
+  alias: Reefdoser1 Pump2s at the specified frequency
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.r1d2s
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.r1d2s
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump2
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.r1d2s
+  - delay: 00:00:{{ states.sensor.reefdoser1_pump2s_single_runtime.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump2
+- id: 3dd92ae28081481d99778aec60e5c3dú
+  alias: Reefdoser1 Pump4s at the specified frequency
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.r1d4s
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.r1d4s
+      state: 'on'
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump4
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.r1d4s
+  - delay: 00:00:{{ states.sensor.reefdoser1_pump4s_single_runtime.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.dpump4
+- id: 3dd92ae28081481d99778aec60e5c3d7
+  alias: Reef ato fill at the specified frequency
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.r1af
+    from: 'off'
+    to: 'on'
+  - platform: mqtt
+    topic: cmnd/hass/atof
+    payload: 'on'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.atof
+  - service: counter.reset
+    data: {}
+    target:
+      entity_id: counter.waterused
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.r1af
+  - delay: 00:00:{{ states.sensor.reef_ato_fill_runtime.state | int }}
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.atof
+  - device_id: 4ed8d8f184091546871f703d57bb70c1
+    domain: mobile_app
+    type: notify
+    message: ATO Fill done
+  - repeat:
+      count: '1'
+      sequence:
+      - service: mqtt.publish
+        data:
+          qos: '0'
+          topic: cmnd/hass/hass
+          payload: '1'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: mqtt.publish
+        data:
+          qos: '0'
+          topic: cmnd/hass/hass
+          payload: '0'
+- id: '1689435231775'
+  alias: out of water 10g
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: '30'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.10g_ds18b20_temperature
+    below: 77
+  action:
+  - service: notify.mobile_app_pixel_7_pro
+    data:
+      message: put water in the fucking tank
+      title: out of water
+  mode: single
+- id: '1689437715340'
+  alias: 75g temp
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: '1'
+  condition: []
+  action:
+  - if:
+    - type: is_temperature
+      condition: device
+      device_id: 5516b45532e45fe899ccc1e9242a5a5e
+      entity_id: sensor.75gpumps_ds18b20_temperature
+      domain: sensor
+      below: 76.8
+    then:
+    - device_id: 4ed8d8f184091546871f703d57bb70c1
+      domain: mobile_app
+      type: notify
+      message: ' {{ states("sensor.75gpumps_ds18b20_temperature") }}'
+      title: Reef temp is low
+  - if:
+    - type: is_temperature
+      condition: device
+      device_id: 5516b45532e45fe899ccc1e9242a5a5e
+      entity_id: sensor.75gpumps_ds18b20_temperature
+      domain: sensor
+      above: 77.3
+    then:
+    - device_id: 4ed8d8f184091546871f703d57bb70c1
+      domain: mobile_app
+      type: notify
+      message: ' {{ states("sensor.75gpumps_ds18b20_temperature") }}'
+      title: 'Reef temp is high '
+  mode: single
+- id: '1689463204377'
+  alias: 'Offline '
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: '3'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: device_tracker.reef11
+      state: not_home
+    - condition: state
+      entity_id: device_tracker.reefdoser1
+      state: not_home
+    - condition: state
+      entity_id: device_tracker.reef1l
+      state: not_home
+  action:
+  - device_id: 4ed8d8f184091546871f703d57bb70c1
+    domain: mobile_app
+    type: notify
+    message: 'Reef1: {{ states("sensor.reef11") }} Reef1L: {{ states("sensor.reef1l")
+      }} Reef1doser: {{ states("sensor.reefdoser1") }}'
+  mode: single
+- id: '1692131713980'
+  alias: New Automation
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: '30'
+  condition:
+  - condition: state
+    entity_id: input_boolean.r1d1
+    state: 'on'
+  action:
+  - event: homeassistant.update_entity
+    event_data: {}
+  mode: single
+- id: '1692197206179'
+  alias: 'Change filter '
+  description: ''
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: binary_sensor.switch2
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  condition:
+  - condition: state
+    entity_id: binary_sensor.switch1
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - condition: state
+    entity_id: switch.pump
+    state: 'on'
+  action:
+  - parallel:
+    - repeat:
+        until:
+        - type: is_off
+          condition: device
+          device_id: 5516b45532e45fe899ccc1e9242a5a5e
+          entity_id: binary_sensor.switch2
+          domain: binary_sensor
+          for:
+            hours: 0
+            minutes: 0
+            seconds: 10
+        sequence:
+        - device_id: 4ed8d8f184091546871f703d57bb70c1
+          domain: mobile_app
+          type: notify
+          message: 'Change filter '
+        - delay:
+            hours: 1
+            minutes: 0
+            seconds: 0
+            milliseconds: 0
+    - repeat:
+        until:
+        - type: is_off
+          condition: device
+          device_id: 5516b45532e45fe899ccc1e9242a5a5e
+          entity_id: binary_sensor.switch2
+          domain: binary_sensor
+          for:
+            hours: 0
+            minutes: 0
+            seconds: 10
+        sequence:
+        - repeat:
+            count: '3'
+            sequence:
+            - service: mqtt.publish
+              data:
+                qos: '0'
+                topic: cmnd/hass/hass
+                payload: '1'
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 2
+                milliseconds: 0
+            - service: mqtt.publish
+              data:
+                qos: '0'
+                payload: '0'
+                topic: cmnd/hass/hass
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 1
+                milliseconds: 0
+        - delay:
+            hours: 0
+            minutes: 30
+            seconds: 0
+            milliseconds: 0
+  mode: single
+- id: '1692201555721'
+  alias: 'Pump failed '
+  description: ''
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: binary_sensor.switch1
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 3
+  condition:
+  - condition: state
+    entity_id: switch.pump
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.r1fm
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.switch2
+    state: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  action:
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.protein_skimmer
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.uv
+    domain: switch
+  - parallel:
+    - repeat:
+        until:
+        - type: is_off
+          condition: device
+          device_id: 5516b45532e45fe899ccc1e9242a5a5e
+          entity_id: binary_sensor.switch1
+          domain: binary_sensor
+        - type: is_off
+          condition: device
+          device_id: 5516b45532e45fe899ccc1e9242a5a5e
+          entity_id: binary_sensor.switch2
+          domain: binary_sensor
+        sequence:
+        - device_id: 4ed8d8f184091546871f703d57bb70c1
+          domain: mobile_app
+          type: notify
+          message: Pump Failed
+        - delay:
+            hours: 0
+            minutes: 4
+            seconds: 0
+            milliseconds: 0
+      enabled: true
+    - repeat:
+        until:
+        - type: is_off
+          condition: device
+          device_id: 5516b45532e45fe899ccc1e9242a5a5e
+          entity_id: binary_sensor.switch1
+          domain: binary_sensor
+        - type: is_off
+          condition: device
+          device_id: 5516b45532e45fe899ccc1e9242a5a5e
+          entity_id: binary_sensor.switch2
+          domain: binary_sensor
+        sequence:
+        - service: mqtt.publish
+          data:
+            qos: '0'
+            topic: cmnd/hass/hass
+            payload: '1'
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 1
+            milliseconds: 0
+        - service: mqtt.publish
+          data:
+            qos: '0'
+            topic: cmnd/hass/hass
+            payload: '0'
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 1
+            milliseconds: 0
+  mode: single
+- id: '1692293564956'
+  alias: Feed mode
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.r1fm
+    to: 'on'
+  - platform: mqtt
+    topic: cmnd/hass/feedmode
+    payload: 'on'
+  condition: []
+  action:
+  - if:
+    - condition: device
+      type: is_on
+      device_id: 5516b45532e45fe899ccc1e9242a5a5e
+      entity_id: switch.uv
+      domain: switch
+    then:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.r1vm
+    - type: turn_off
+      device_id: 5516b45532e45fe899ccc1e9242a5a5e
+      entity_id: switch.uv
+      domain: switch
+    else:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.r1vm
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.pump
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.power_head
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.protein_skimmer
+    domain: switch
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 30
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.r1fm
+  - if:
+    - condition: state
+      entity_id: input_boolean.r1vm
+      state: 'on'
+    then:
+    - type: turn_on
+      device_id: 5516b45532e45fe899ccc1e9242a5a5e
+      entity_id: switch.uv
+      domain: switch
+  - type: turn_on
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.pump
+    domain: switch
+  - type: turn_on
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.power_head
+    domain: switch
+  - if:
+    - condition: state
+      entity_id: binary_sensor.switch1
+      state: 'on'
+    then:
+    - wait_for_trigger:
+      - type: turned_off
+        platform: device
+        device_id: 5516b45532e45fe899ccc1e9242a5a5e
+        entity_id: binary_sensor.switch1
+        domain: binary_sensor
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 15
+        milliseconds: 0
+    - type: turn_on
+      device_id: 5516b45532e45fe899ccc1e9242a5a5e
+      entity_id: switch.protein_skimmer
+      domain: switch
+    else:
+    - type: turn_on
+      device_id: 5516b45532e45fe899ccc1e9242a5a5e
+      entity_id: switch.protein_skimmer
+      domain: switch
+  mode: single
+- id: '1713031817121'
+  alias: Estop
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: cmnd/hass/hass
+    payload: 'off'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 8bf88e2b0a599747d14703b5e7570351
+    entity_id: switch.dpump1
+    domain: switch
+  - type: turn_off
+    device_id: 8bf88e2b0a599747d14703b5e7570351
+    entity_id: switch.dpump2
+    domain: switch
+  - type: turn_off
+    device_id: 8bf88e2b0a599747d14703b5e7570351
+    entity_id: switch.dpump3
+    domain: switch
+  - type: turn_off
+    device_id: 8bf88e2b0a599747d14703b5e7570351
+    entity_id: switch.dpump4
+    domain: switch
+  - type: turn_off
+    device_id: 8bf88e2b0a599747d14703b5e7570351
+    entity_id: switch.ato
+    domain: switch
+  - type: turn_off
+    device_id: 8bf88e2b0a599747d14703b5e7570351
+    entity_id: switch.atof
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.pump
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.power_head
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.protein_skimmer
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.uv
+    domain: switch
+  - type: turn_off
+    device_id: 5516b45532e45fe899ccc1e9242a5a5e
+    entity_id: switch.heater_s
+    domain: switch
+  mode: single
+- id: '1721526334888'
+  alias: The Panel Update
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.75gpumps_ds18b20_temperature
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmnd/hass/hass
+      payload: Temp {{ states("sensor.75gpumps_ds18b20_temperature") }} used {{ states("counter.waterused")
+        }}
+  mode: single
+- id: '1721559189347'
+  alias: water count adder
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.switch5
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - repeat:
+      count: '600'
+      sequence:
+      - if:
+        - condition: state
+          entity_id: binary_sensor.switch5
+          state: 'on'
+        then:
+        - service: counter.increment
+          data: {}
+          target:
+            entity_id: counter.waterused
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 1
+            milliseconds: 500
+  mode: single
+- id: '1721739336878'
+  alias: 'ATO protection '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.switch5
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+    from: 'off'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 8bf88e2b0a599747d14703b5e7570351
+    entity_id: switch.ato
+    domain: switch
+  - device_id: 4ed8d8f184091546871f703d57bb70c1
+    domain: mobile_app
+    type: notify
+    message: 'ATO fill protection '
+  mode: single
